@@ -1,0 +1,32 @@
+body{
+  text-align: center;
+  width: 500px;
+  margin-left: 37%;
+  margin-right: 63%;
+  border: 4px solid brown;
+}
+#todo ul{
+  list-style: none;
+  display: inline-block;
+  text-align: left;
+  width: 90%;
+}
+#todo li{
+  clear:both;
+}
+li .button{
+  float: right;
+}
+#todo li > span.done{
+  text-decoration: line-through;
+}
+#todo h1{
+  background-color: brown;
+  color:white;
+  margin-top: 0px;
+}
+#todo form{
+  border-bottom: 2px solid black;
+  width: 500px;
+  padding-bottom: 10px;
+}

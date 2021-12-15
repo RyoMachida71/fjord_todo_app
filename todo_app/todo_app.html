@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <link rel="stylesheet" href="todo.css">
+  <title>TODOアプリ</title>
+</head>
+<body>
+  <div id="todo">
+    <h1>TODOアプリ</h1>
+    
+    <form @submit.prevent>
+      <input type="text" v-model="newTodo">
+      <button @click="addTodo">追加</button>
+    </form>
+    <ul>
+      <li v-for="(todo, index) in todos" :key='index'>
+        <input type="checkbox" v-model="todo.isDone">
+        <span v-bind:class="{done: todo.isDone}">{{ todo.item }}</span> 
+        <button  @click="deleteTodo(index)" class="button">削除</button>
+
+        <button  @click="showEditTodo(index)" class="button">編集</button>
+        <input type="text" v-model="editComment" v-show="todo.showEdit">
+        <button @click="editTodo(todo)" v-show="todo.showEdit" >完了</button>
+      </li>
+    </ul>
+  </div>
+  <script>
+    var todo_app = new Vue({
+      el: '#todo',
+      data: {
+        newTodo: null,
+        todos: null,
+        editComment: null,
+      },
+    created(){
+      this.todos = JSON.parse(localStorage.getItem('todos'));
+    },
+    methods:{
+      saveTodo: function(){
+        localStorage.setItem('todos', JSON.stringify(this.todos))
+      },
+      addTodo: function(){
+        if(this.newTodo == null) return;
+        
+        this.todos.push({
+          item: this.newTodo,
+          showEdit: false
+        });
+        this.newTodo = null;
+        this.saveTodo();
+      },
+      showEditTodo: function(index){
+        this.todos[index].showEdit = true;
+      },
+      editTodo: function(todo){
+        const targetIndex = this.todos.indexOf(todo);
+        this.todos.splice(targetIndex, 1, {
+          item: this.editComment,
+          showEdit: false
+        })
+        this.editComment = null;
+        this.saveTodo();
+      },
+      deleteTodo: function(index){
+        this.todos.splice(index, 1);
+        this.saveTodo();
+      }
+    }
+  })
+  </script>
+</body>
+</html>
