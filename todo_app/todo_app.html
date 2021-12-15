@@ -17,7 +17,7 @@
       <button @click="addTodo">追加</button>
     </form>
     <ul>
-      <li v-for="(todo, index) in todos">
+      <li v-for="(todo, index) in todos" :key='index'>
         <input type="checkbox" v-model="todo.isDone">
         <span v-bind:class="{done: todo.isDone}">{{ todo.item }}</span> 
         <button  @click="deleteTodo(index)" class="button">削除</button>
@@ -32,11 +32,11 @@
     var todo_app = new Vue({
       el: '#todo',
       data: {
-        newTodo: "",
-        todos:[],
-        editComment: '',
+        newTodo: null,
+        todos: null,
+        editComment: null,
       },
-    mounted(){
+    created(){
       this.todos = JSON.parse(localStorage.getItem('todos'));
     },
     methods:{
@@ -44,14 +44,13 @@
         localStorage.setItem('todos', JSON.stringify(this.todos))
       },
       addTodo: function(){
-        if(this.newTodo == '') {
-          return true;
-        }
+        if(this.newTodo == null) return;
+        
         this.todos.push({
           item: this.newTodo,
           showEdit: false
         });
-        this.newTodo = '';
+        this.newTodo = null;
         this.saveTodo();
       },
       showEditTodo: function(index){
@@ -63,7 +62,7 @@
           item: this.editComment,
           showEdit: false
         })
-        this.editComment = '';
+        this.editComment = null;
         this.saveTodo();
       },
       deleteTodo: function(index){
